@@ -6,6 +6,12 @@ target 'chatroom' do
   use_frameworks!
 
   # Pods for chatroom
+pod 'FBSDKCoreKit', '~> 4.38.0'
+pod 'FBSDKLoginKit', '~> 4.38.0'
+pod 'Firebase/Analytics'
+pod 'Firebase/Auth'
+pod 'Firebase/Database'
+pod 'Firebase/Storage'
 
   target 'chatroomTests' do
     inherit! :search_paths
