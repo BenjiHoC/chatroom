@@ -25,6 +25,7 @@ final class ChatRoomViewController: MessagesViewController {
   
     private let user: User
     private let chatRoom: ChatRoom
+    var imagePicker = UIImagePickerController()
   
     deinit {
         messageListener?.remove()
@@ -45,14 +46,111 @@ final class ChatRoomViewController: MessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        imagePicker.delegate = self
+        imagePicker.modalPresentationStyle = .fullScreen
         loadDocuments()
         setupUI()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        messageInputBar.isHidden = false
+        self.messagesCollectionView.scrollToBottom(animated: true)
+    }
   
 // MARK: - Actions
+    @objc private func cameraButtonPressed() {
+        
+        // Alert to choose between actions
+        let alert = UIAlertController(title: "Upload et billed", message: nil, preferredStyle: .actionSheet)
+           alert.addAction(UIAlertAction(title: "Kamera", style: .default, handler: { _ in
+               self.openCamera()
+           }))
+
+           alert.addAction(UIAlertAction(title: "Kamerarulle", style: .default, handler: { _ in
+               self.openGallery()
+           }))
+
+        alert.addAction(UIAlertAction.init(title: "Afbryd", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
     
+    // Opens camera if you have
+    func openCamera()
+    {
+        messageInputBar.isHidden = true
+        if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerController.SourceType.camera))
+        {
+            imagePicker.sourceType = UIImagePickerController.SourceType.camera
+            imagePicker.allowsEditing = true
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+        else
+        {
+            let alert  = UIAlertController(title: "Warning", message: "You don't have camera", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+
+    // Opens gallery
+    func openGallery()
+    {
+        messageInputBar.isHidden = true
+        imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
+        imagePicker.allowsEditing = true
+        self.present(imagePicker, animated: true, completion: nil)
+    }
 // MARK: - Methods
-  
+    
+    private func uploadImage(_ image: UIImage, to chatRoom: ChatRoom, completion: @escaping (URL?) -> Void) {
+        guard let chatRoomID = chatRoom.id else {
+            completion(nil)
+            return
+        }
+        
+        let imageName = NSUUID().uuidString
+        let ref = storage.storage.reference().child(chatRoomID).child("message_photos").child(imageName)
+        if let uploadData = image.jpegData(compressionQuality: 0.2){
+            
+            ref.putData(uploadData, metadata: nil) { (metaData, error) in
+                if error != nil {
+                    print("Error: ", error)
+                    return
+                }
+                    ref.downloadURL { (url, error) in
+                        guard let downloadURL = url else {
+                            print("Error: ", error)
+
+                            return
+                        }
+                        let imageUrl = downloadURL.absoluteString
+                        print(imageUrl)
+                    }
+            }
+        
+        }
+    }
+    
+    private func sendPhoto(_ image: UIImage) {
+      
+      uploadImage(image, to: chatRoom) { [weak self] url in
+        guard let `self` = self else {
+          return
+        }
+        
+        guard let url = url else {
+          return
+        }
+        
+        var message = Message(user: self.user, image: image)
+        message.downloadURL = url
+        
+        self.save(message)
+        self.messagesCollectionView.scrollToBottom()
+      }
+    }
+    
     // Load the documents
     func loadDocuments(){
         guard let id = chatRoom.id else {
@@ -91,6 +189,24 @@ final class ChatRoomViewController: MessagesViewController {
 
         messageInputBar.leftStackView.alignment = .center
         messageInputBar.setLeftStackViewWidthConstant(to: 50, animated: false)
+        
+        let cameraItem = InputBarButtonItem(type: .system)
+        cameraItem.tintColor = .primary
+        cameraItem.image = #imageLiteral(resourceName: "camera")
+
+        
+        cameraItem.addTarget(
+          self,
+          action: #selector(cameraButtonPressed),
+          for: .primaryActionTriggered
+        )
+        cameraItem.setSize(CGSize(width: 60, height: 30), animated: false)
+
+        messageInputBar.leftStackView.alignment = .center
+        messageInputBar.setLeftStackViewWidthConstant(to: 50, animated: false)
+
+    
+        messageInputBar.setStackViewItems([cameraItem], forStack: .left, animated: false)
     }
     
     // Save the message to Firestore
@@ -141,16 +257,45 @@ final class ChatRoomViewController: MessagesViewController {
   
     // Observe new databaes changes and handle changes
     private func handleDocumentChange(_ change: DocumentChange) {
-        guard let message = Message(document: change.document) else {
+        guard var message = Message(document: change.document) else {
             return
-        }
-        
-        switch change.type {
-            case .added:
+      }
+      
+          switch change.type {
+          case .added:
+            if let url = message.downloadURL {
+                downloadImage(at: url) { [weak self] image in
+                    guard let `self` = self else {
+                        return
+                    }
+                    guard let image = image else {
+                        return
+                    }
+                    message.image = image
+                    self.insertNewMessage(message)
+                }
+            }
+            else {
                 insertNewMessage(message)
-        default:
+            }
+          default:
             break
         }
+    }
+    
+    // Download image from firebase storage url
+    private func downloadImage(at url: URL, completion: @escaping (UIImage?) -> Void) {
+      let ref = Storage.storage().reference(forURL: url.absoluteString)
+      let megaByte = Int64(1 * 1024 * 1024)
+      
+      ref.getData(maxSize: megaByte) { data, error in
+        guard let imageData = data else {
+          completion(nil)
+          return
+        }
+        
+        completion(UIImage(data: imageData))
+      }
     }
 }
 
@@ -240,4 +385,32 @@ extension ChatRoomViewController: MessageInputBarDelegate {
     }
 }
 
-// MARK: - TODO : - Extenstion UIImagePickerControllerDelegate
+// MARK: - Extenstion UIImagePickerControllerDelegate
+
+extension ChatRoomViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+  
+  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    
+        var selectedImageFromPicker: UIImage?
+        
+        
+        if let editedImage = info[.editedImage] as? UIImage {
+            // Set image to the edited image
+            selectedImageFromPicker = editedImage
+        } else if let originalImage = info[.originalImage] as? UIImage {
+            // Set image to the original image
+            selectedImageFromPicker = originalImage
+        }
+        
+        if let selectedImage = selectedImageFromPicker {
+            // Send photo
+            self.sendPhoto(selectedImage)
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
+  
+  func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    picker.dismiss(animated: true, completion: nil)
+  }
+  
+}
