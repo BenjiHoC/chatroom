@@ -89,6 +89,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         chatRoomsVC.modalPresentationStyle = .fullScreen
         self.present(chatRoomsVC, animated: true)
     }
+    
     // Create alert
     func showLoginAlert(){
         let alert = UIAlertController(title: "Fejl", message: "Der skete en fejl ved forsøg af login. Prøv igen", preferredStyle: .alert)

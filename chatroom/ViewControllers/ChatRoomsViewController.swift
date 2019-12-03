@@ -58,6 +58,7 @@ class ChatRoomsViewController: UIViewController {
     
     //MARK: - IBOutlet actions
     
+    // Sign out with firebase auth and show an alert asking if user is certain
     @IBAction func signOut(_ sender: Any) {
         let ac = UIAlertController(title: nil, message: "Er du sikker på du vil logge ud?", preferredStyle: .alert)
           ac.addAction(UIAlertAction(title: "Nej", style: .cancel, handler: nil))
@@ -101,32 +102,16 @@ class ChatRoomsViewController: UIViewController {
         guard let chatRoom = ChatRoom(document: change.document) else {
             return
         }
+        
         switch change.type {
         case .added:
             addChatRoomToTable(chatRoom)
-        case .modified:
-            updateChatRoomInTable(chatRoom)
-        case .removed:
-            removeChatRoomFromTable(chatRoom)
+        default:
+            break
         }
     }
     
-    private func updateChatRoomInTable(_ chatRoom: ChatRoom) {
-        guard let index = chatRooms.index(of: chatRoom) else {
-            return
-        }
-        chatRooms[index] = chatRoom
-        self.ChatRoomTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-    }
-    
-    private func removeChatRoomFromTable(_ chatRoom: ChatRoom) {
-        guard let index = chatRooms.index(of: chatRoom) else {
-            return
-        }
-        chatRooms.remove(at: index)
-        ChatRoomTableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-    }
-    
+    // Add to array 
     private func addChatRoomToTable(_ chatRoom: ChatRoom) {
         guard !chatRooms.contains(chatRoom) else {
             return
