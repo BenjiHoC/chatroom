@@ -84,7 +84,7 @@ class ChatRoomsViewController: UIViewController {
     func loadDocuments(){
         chatRoomListener = chatRoomReference.addSnapshotListener { querySnapshot, error in
           guard let snapshot = querySnapshot else {
-            print("Error listening for channel updates: \(error?.localizedDescription ?? "No error")")
+            print("Error listening for chat room updates: \(error?.localizedDescription ?? "No error")")
             return
           }
           

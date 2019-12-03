@@ -102,7 +102,6 @@ final class ChatRoomViewController: MessagesViewController {
                 return
             }
             // Scroll to the bottom
-            self.insertNewMessage(message)
             self.messagesCollectionView.scrollToBottom()
         }
     }
