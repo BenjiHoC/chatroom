@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Chat Rooms View Controller-->
+        <scene sceneID="gZU-wJ-ihL">
+            <objects>
+                <viewController storyboardIdentifier="ChatRoomsStoryboard" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DQw-8B-PXI" customClass="ChatRoomsViewController" customModule="chatroom" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="JlZ-tu-AHH">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" largeTitles="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5UY-BH-TiX">
+                                <rect key="frame" x="0.0" y="44" width="414" height="96"/>
+                                <items>
+                                    <navigationItem title="Chat rooms" id="ye3-9t-hYY">
+                                        <barButtonItem key="rightBarButtonItem" title="Log ud" id="8GI-Qs-yrG">
+                                            <connections>
+                                                <action selector="signOut:" destination="DQw-8B-PXI" id="arH-dS-iwD"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="aXQ-eg-QUA">
+                                <rect key="frame" x="0.0" y="140" width="414" height="722"/>
+                                <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatRoomsViewCell" id="BpB-Hk-hQl" customClass="ChatRoomsTableViewCell" customModule="chatroom" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="55.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BpB-Hk-hQl" id="VtS-7m-lne">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="55.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HUK-wP-i32">
+                                                    <rect key="frame" x="35" y="11" width="39.5" height="33.5"/>
+                                                    <fontDescription key="fontDescription" name="Noteworthy-Light" family="Noteworthy" pointSize="20"/>
+                                                    <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <color key="shadowColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="HUK-wP-i32" secondAttribute="bottom" id="PZk-eF-9bI"/>
+                                                <constraint firstItem="HUK-wP-i32" firstAttribute="leading" secondItem="VtS-7m-lne" secondAttribute="leadingMargin" constant="15" id="XFX-NK-fTw"/>
+                                                <constraint firstItem="HUK-wP-i32" firstAttribute="top" secondItem="VtS-7m-lne" secondAttribute="topMargin" id="ZcO-2n-7Ja"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="ChatRoomNameLabel" destination="HUK-wP-i32" id="8FG-Wh-RcF"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="DQw-8B-PXI" id="kcY-BM-3bE"/>
+                                    <outlet property="delegate" destination="DQw-8B-PXI" id="8ac-wu-ksd"/>
+                                </connections>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="opf-PF-Tki">
+                                <rect key="frame" x="20" y="44" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="aXQ-eg-QUA" firstAttribute="top" secondItem="5UY-BH-TiX" secondAttribute="bottom" id="1XS-la-4SF"/>
+                            <constraint firstItem="msQ-On-V0c" firstAttribute="trailing" secondItem="aXQ-eg-QUA" secondAttribute="trailing" id="7ZJ-53-UKi"/>
+                            <constraint firstItem="msQ-On-V0c" firstAttribute="bottom" secondItem="aXQ-eg-QUA" secondAttribute="bottom" id="GiV-nn-WSo"/>
+                            <constraint firstItem="opf-PF-Tki" firstAttribute="top" secondItem="5UY-BH-TiX" secondAttribute="top" id="MYN-GU-JqA"/>
+                            <constraint firstItem="5UY-BH-TiX" firstAttribute="leading" secondItem="msQ-On-V0c" secondAttribute="leading" id="RWj-4u-bM3"/>
+                            <constraint firstItem="aXQ-eg-QUA" firstAttribute="leading" secondItem="msQ-On-V0c" secondAttribute="leading" id="p7H-uA-0w7"/>
+                            <constraint firstItem="opf-PF-Tki" firstAttribute="leading" secondItem="msQ-On-V0c" secondAttribute="leading" constant="20" id="pGU-m6-uhL"/>
+                            <constraint firstItem="5UY-BH-TiX" firstAttribute="trailing" secondItem="msQ-On-V0c" secondAttribute="trailing" id="uBg-Gb-97h"/>
+                            <constraint firstItem="msQ-On-V0c" firstAttribute="top" secondItem="5UY-BH-TiX" secondAttribute="top" id="wcg-xd-n2A"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="msQ-On-V0c"/>
+                    </view>
+                    <connections>
+                        <outlet property="ChatRoomTableView" destination="aXQ-eg-QUA" id="7ds-CS-PSI"/>
+                        <outlet property="ProfileNameLabel" destination="opf-PF-Tki" id="4cf-MS-1b1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="onU-mJ-gTw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="170" y="92"/>
+        </scene>
+    </scenes>
+</document>
