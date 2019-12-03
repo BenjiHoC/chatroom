@@ -13,6 +13,7 @@ import FirebaseFirestore
 import FirebaseDatabase
 import FBSDKCoreKit
 import FBSDKLoginKit
+import Photos
 
 class ChatRoomsViewController: UIViewController {
     
