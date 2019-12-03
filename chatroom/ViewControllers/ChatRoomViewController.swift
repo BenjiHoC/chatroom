@@ -98,12 +98,24 @@ final class ChatRoomViewController: MessagesViewController {
         reference?.addDocument(data: message.representation) { error in
             if let e = error {
                 print("Error sending message: \(e.localizedDescription)")
+                self.showErrorAlert()
                 return
             }
             // Scroll to the bottom
             self.insertNewMessage(message)
             self.messagesCollectionView.scrollToBottom()
         }
+    }
+    
+    // Create alert
+    func showErrorAlert(){
+        let alert = UIAlertController(title: "Fejl", message: "Der skete en fejl ved.", preferredStyle: .alert)
+        
+        // Add action for alert
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        
+        // Add alert to view
+        self.present(alert, animated: true)
     }
   
     // Add message to messages array and reload the messagesCollectionView
@@ -114,6 +126,8 @@ final class ChatRoomViewController: MessagesViewController {
     
         messages.append(message)
         messages.sort()
+        
+        // Check if the message is the latest
         let isLatestMessage = messages.index(of: message) == (messages.count - 1)
         let shouldScrollToBottom = messagesCollectionView.isAtBottom && isLatestMessage
         

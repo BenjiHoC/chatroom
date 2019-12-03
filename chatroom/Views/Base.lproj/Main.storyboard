@@ -38,6 +38,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c2u-Wi-K6Z" customClass="GIDSignInButton">
+                                <rect key="frame" x="15" y="483" width="384" height="40"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="1sk-Gi-zed"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -45,6 +52,7 @@
                             <constraint firstItem="Uxd-si-xTX" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="34H-PC-g6b"/>
                             <constraint firstItem="Uxd-si-xTX" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="7tg-tu-rSL"/>
                             <constraint firstItem="9MC-DY-bp3" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="O5p-mD-P34"/>
+                            <constraint firstItem="c2u-Wi-K6Z" firstAttribute="top" secondItem="Uxd-si-xTX" secondAttribute="bottom" constant="15" id="Txc-sb-Qvd"/>
                             <constraint firstItem="jwU-r0-gJs" firstAttribute="centerX" secondItem="ylK-sR-gaK" secondAttribute="centerX" id="UW4-xy-iUx"/>
                             <constraint firstItem="jwU-r0-gJs" firstAttribute="top" secondItem="ylK-sR-gaK" secondAttribute="bottom" constant="5" id="V8B-Pl-9cM"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ylK-sR-gaK" secondAttribute="trailing" constant="15" id="Ya6-nI-hQB"/>
@@ -52,9 +60,11 @@
                             <constraint firstItem="Uxd-si-xTX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="bhw-ac-GjY"/>
                             <constraint firstItem="9MC-DY-bp3" firstAttribute="top" secondItem="jwU-r0-gJs" secondAttribute="bottom" constant="5" id="fDE-zF-ivm"/>
                             <constraint firstItem="9MC-DY-bp3" firstAttribute="centerX" secondItem="jwU-r0-gJs" secondAttribute="centerX" id="gNV-Ff-ZuH"/>
+                            <constraint firstItem="c2u-Wi-K6Z" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="jFb-4d-43v"/>
                             <constraint firstItem="ylK-sR-gaK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="lqh-TT-3CF"/>
                             <constraint firstItem="ylK-sR-gaK" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="50" id="mLE-hJ-rjR"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="9MC-DY-bp3" secondAttribute="trailing" constant="15" id="mle-Eb-Ib7"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="c2u-Wi-K6Z" secondAttribute="trailing" constant="15" id="p6M-y8-KAG"/>
                             <constraint firstItem="jwU-r0-gJs" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="wgk-2x-wVd"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
