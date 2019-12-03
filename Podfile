@@ -15,6 +15,7 @@ pod 'Firebase/Storage'
 pod 'Firebase/Firestore'
 pod 'MessageKit'
 pod 'MessageInputBar'
+pod 'GoogleSignIn'
 
   target 'chatroomTests' do
     inherit! :search_paths

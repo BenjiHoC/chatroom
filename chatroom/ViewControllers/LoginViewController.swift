@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FBSDKCoreKit
 import FBSDKLoginKit
+import GoogleSignIn
 
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
@@ -20,13 +21,14 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
         FbLoginButton.delegate = self
+        GIDSignIn.sharedInstance()?.presentingViewController = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidDisappear(true)
         
+         NotificationCenter.default.addObserver(self, selector: #selector(didSignIn), name: NSNotification.Name("SuccessfulSignInNotification"), object: nil)
         handleAutoLogin()
     }
     
@@ -48,6 +50,15 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     }
     
     // MARK: - Methods
+    
+    // Redirect with google sign in
+    @objc func didSignIn()  {
+        redirectToChatRooms()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     
     // Check if any user is already logged in and sent to chat room viewcontroller if user is logged in
     func handleAutoLogin(){

@@ -274,6 +274,7 @@
 				43AC7DC72395160F0083A67E /* Frameworks */,
 				43AC7DC82395160F0083A67E /* Resources */,
 				E716C46C0AD52B03F61E3ABA /* [CP] Embed Pods Frameworks */,
+				97892A232E80AB3B7C2485C4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -312,6 +313,7 @@
 				43AC7DE8239516120083A67E /* Frameworks */,
 				43AC7DE9239516120083A67E /* Resources */,
 				3215D3C74365670C0E06B677 /* [CP] Embed Pods Frameworks */,
+				D8631791F877F9AAF90F313D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -480,6 +482,40 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		97892A232E80AB3B7C2485C4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-chatroom/Pods-chatroom-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-chatroom/Pods-chatroom-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-chatroom/Pods-chatroom-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D8631791F877F9AAF90F313D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-chatroom-chatroomUITests/Pods-chatroom-chatroomUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-chatroom-chatroomUITests/Pods-chatroom-chatroomUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-chatroom-chatroomUITests/Pods-chatroom-chatroomUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E716C46C0AD52B03F61E3ABA /* [CP] Embed Pods Frameworks */ = {
