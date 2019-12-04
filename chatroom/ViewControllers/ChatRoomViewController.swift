@@ -103,6 +103,8 @@ final class ChatRoomViewController: MessagesViewController {
     }
 // MARK: - Methods
     
+    
+    // Upload image to firebase storage and try to retrieve it and send it in message.
     private func uploadImage(_ image: UIImage, to chatRoom: ChatRoom, completion: @escaping (URL?) -> Void) {
         guard let chatRoomID = chatRoom.id else {
             completion(nil)
@@ -115,16 +117,29 @@ final class ChatRoomViewController: MessagesViewController {
             
             ref.putData(uploadData, metadata: nil) { (metaData, error) in
                 if error != nil {
-                    print("Error: ", error)
+                    self.showErrorAlert()
                     return
                 }
                     ref.downloadURL { (url, error) in
                         guard let downloadURL = url else {
-                            print("Error: ", error)
-
+                            self.showErrorAlert()
                             return
                         }
-                        let imageUrl = downloadURL.absoluteString
+                        let imageUrl = downloadURL.absoluteURL
+                        var message = Message(user: self.user, image: image)
+                        
+                        self.downloadImage(at: imageUrl) { [weak self] image in
+                            guard let `self` = self else {
+                                return
+                            }
+                            guard let image = image else {
+                                return
+                            }
+                            
+                            message.downloadURL = imageUrl
+                            message.image?.image = image
+                            }
+                        self.insertNewMessage(message)
                         print(imageUrl)
                     }
             }
@@ -132,9 +147,9 @@ final class ChatRoomViewController: MessagesViewController {
         }
     }
     
+    // Method for when image is selected from uiimagepicker
     private func sendPhoto(_ image: UIImage) {
-      
-      uploadImage(image, to: chatRoom) { [weak self] url in
+        uploadImage(image, to: chatRoom) { [weak self] url in
         guard let `self` = self else {
           return
         }
@@ -151,7 +166,7 @@ final class ChatRoomViewController: MessagesViewController {
       }
     }
     
-    // Load the documents
+    // Load the documents from specific firestore path
     func loadDocuments(){
         guard let id = chatRoom.id else {
             self.dismiss(animated: true)
@@ -163,11 +178,11 @@ final class ChatRoomViewController: MessagesViewController {
         messageListener = reference?.addSnapshotListener { querySnapshot, error in
           guard let snapshot = querySnapshot else {
             print("Error listening for chat room updates: \(error?.localizedDescription ?? "No error")")
+            self.showErrorAlert()
             return
           }
           
           snapshot.documentChanges.forEach { change in
-            print(change.document.documentID)
             self.handleDocumentChange(change)
           }
         }
@@ -224,7 +239,7 @@ final class ChatRoomViewController: MessagesViewController {
     
     // Create alert
     func showErrorAlert(){
-        let alert = UIAlertController(title: "Fejl", message: "Der skete en fejl ved.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Fejl", message: "Der skete en fejl", preferredStyle: .alert)
         
         // Add action for alert
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
@@ -239,6 +254,7 @@ final class ChatRoomViewController: MessagesViewController {
             return
         }
     
+        print(message)
         messages.append(message)
         messages.sort()
         
@@ -263,21 +279,7 @@ final class ChatRoomViewController: MessagesViewController {
       
           switch change.type {
           case .added:
-            if let url = message.downloadURL {
-                downloadImage(at: url) { [weak self] image in
-                    guard let `self` = self else {
-                        return
-                    }
-                    guard let image = image else {
-                        return
-                    }
-                    message.image = image
-                    self.insertNewMessage(message)
-                }
-            }
-            else {
                 insertNewMessage(message)
-            }
           default:
             break
         }
