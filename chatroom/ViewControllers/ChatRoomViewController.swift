@@ -312,6 +312,11 @@ extension ChatRoomViewController: MessagesDisplayDelegate {
   func shouldDisplayHeader(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> Bool {
     return false
   }
+    
+    // TODO: - Fix label display names to show correctly over bubble
+    func cellTopLabelAlignment(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> LabelAlignment {
+        return isFromCurrentSender(message: message) ? LabelAlignment.init(textAlignment: NSTextAlignment.right, textInsets: UIEdgeInsets.init(top: 0, left: 20, bottom: 0, right: 0)) : LabelAlignment.init(textAlignment: NSTextAlignment.left, textInsets: UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 20))
+    }
   
   func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
     let corner: MessageStyle.TailCorner = isFromCurrentSender(message: message) ? .bottomRight : .bottomLeft
@@ -324,18 +329,22 @@ extension ChatRoomViewController: MessagesDisplayDelegate {
 
 extension ChatRoomViewController: MessagesLayoutDelegate {
   
-  func avatarSize(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGSize {
-    return .zero
-  }
+    func avatarSize(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGSize {
+        return .zero
+    }
   
-  func footerViewSize(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGSize {
-    return CGSize(width: 0, height: 8)
-  }
+    func footerViewSize(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGSize {
+        return CGSize(width: 0, height: 8)
+    }
   
-  func heightForLocation(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+    func cellTopLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+        return 30
+    }
     
-    return 0
-  }
+    func heightForLocation(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+    
+        return 0
+    }
   
 }
 
@@ -362,11 +371,13 @@ extension ChatRoomViewController: MessagesDataSource {
       
     func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
         let name = message.sender.displayName
+        let paragraph = NSMutableParagraphStyle()
         return NSAttributedString(
             string: name,
             attributes: [
                 .font: UIFont.preferredFont(forTextStyle: .caption1),
-                .foregroundColor: UIColor(white: 0.3, alpha: 1)
+                .foregroundColor: UIColor.black,
+                .paragraphStyle: paragraph
             ]
         )
     }
