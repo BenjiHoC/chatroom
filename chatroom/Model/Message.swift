@@ -10,6 +10,21 @@ import Firebase
 import MessageKit
 import FirebaseFirestore
 
+// Can't use UIImage so have to make a custom struct of MediaItem from MessageKit
+struct ImageMediaItem: MediaItem {
+
+    var url: URL?
+    var image: UIImage?
+    var placeholderImage: UIImage
+    var size: CGSize
+
+    init(image: UIImage) {
+        self.image = image
+        self.size = CGSize(width: 240, height: 240)
+        self.placeholderImage = UIImage()
+    }
+}
+
 struct Message: MessageType {
     
     //var sender: SenderType
@@ -20,17 +35,18 @@ struct Message: MessageType {
   
     var kind: MessageKind {
         if let image = image {
-            return .photo(image as! MediaItem)
+            return .photo(image)
         } else {
             return .text(content)
         }
     }
+    
   
       var messageId: String {
         return id ?? UUID().uuidString
       }
       
-      var image: UIImage? = nil
+      var image: ImageMediaItem? = nil
       var downloadURL: URL? = nil
       
       init(user: User, content: String) {
@@ -42,7 +58,7 @@ struct Message: MessageType {
       
       init(user: User, image: UIImage) {
         sender = Sender(id: user.uid, displayName: AppSettings.displayName)
-        self.image = image
+        self.image?.image = image
         content = ""
         sentDate = Date()
         id = nil
@@ -50,7 +66,6 @@ struct Message: MessageType {
       
     init?(document: QueryDocumentSnapshot) {
         let data = document.data()
-        print("message data: ", data)
     
         guard let senderID = data["senderID"] as? String else {
             return nil
